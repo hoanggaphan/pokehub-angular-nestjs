@@ -1,0 +1,13 @@
+<div class="container mx-auto">
+    <owl-carousel-o [options]="customOptions">
+        @for (video of videos; track video.id) {
+        <ng-template carouselSlide>
+            <a class="slide" [href]="'https://www.youtube.com/watch?v=' + video.youtubeId" target="_blank"
+                rel="noopener">
+                <img class="slide-image" [src]="video.thumbnailUrl" [alt]="video.title" />
+                <div class="slide-caption">{{ video.title }}</div>
+            </a>
+        </ng-template>
+        }
+    </owl-carousel-o>
+</div>
