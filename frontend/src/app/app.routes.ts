@@ -19,7 +19,6 @@ export const routes: Routes = [
                 title: 'Pokemon List Page',
                 path: 'pokemon',
                 loadComponent: () => import('./pages/poke-list/poke-list').then(m => m.PokeList),
-                canActivate: [AuthGuard]
             },
         ]
     },
