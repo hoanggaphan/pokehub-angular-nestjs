@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-not-found',
   imports: [],
   templateUrl: './not-found.html',
-  styleUrl: './not-found.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFound {

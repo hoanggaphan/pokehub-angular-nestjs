@@ -20,7 +20,6 @@ import AuthService from '../../services/auth.service';
     MatCardModule,
   ],
   templateUrl: './register.html',
-  styleUrl: './register.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Register {
