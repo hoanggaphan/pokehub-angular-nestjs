@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
-import { NotFound } from './pages/not-found/not-found';
-import { PokeList } from './pages/poke-list/poke-list';
 
 export const routes: Routes = [
     {
@@ -11,8 +9,8 @@ export const routes: Routes = [
     },
     {
         path: 'pokemon-list',
-        component: PokeList,
+        loadComponent: () => import('./pages/poke-list/poke-list').then(m => m.PokeList),
         title: 'Pokemon List Page'
     },
-    { path: '**', component: NotFound }
+    { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) }
 ];
