@@ -1,1 +1,82 @@
-<p>header works!</p>
+<header
+    class="shadow-sm sticky top-0 z-40 bg-[var(--mat-sys-surface)]/80 backdrop-blur supports-[backdrop-filter]:bg-[var(--mat-sys-surface)]/70">
+    <mat-toolbar class="mx-auto min-h-16 !bg-transparent !text-[var(--mat-sys-on-surface)] justify-between">
+        <a routerLink="/" class="flex items-center gap-2 hover:opacity-90 transition">
+            <span class="material-icons !text-rose-500">catching_pokemon</span>
+            <span class="font-semibold tracking-wide">Pokehub</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-2">
+            <a mat-button routerLink="/" class="!text-[var(--mat-sys-on-surface)]">Home</a>
+            <a mat-button routerLink="/pokemon" class="!text-[var(--mat-sys-on-surface)]">Pokémon</a>
+        </nav>
+
+        <div class="hidden md:flex items-center gap-2">
+            @if (!loggedIn) {
+            <a mat-stroked-button color="primary" routerLink="/login">Login</a>
+            <a mat-flat-button color="primary" routerLink="/register">Sign up</a>
+            } @else {
+            <button mat-button [matMenuTriggerFor]="menu"
+                class="!text-[var(--mat-sys-on-surface)] flex items-center gap-2">
+                <span class="material-icons">account_circle</span>
+                <span>{{ username || 'User' }}</span>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item routerLink="/pokemon">
+                    <span class="material-icons">list</span>
+                    <span>My Pokémon</span>
+                </button>
+                <button mat-menu-item (click)="onLogout()">
+                    <span class="material-icons">logout</span>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+            }
+        </div>
+
+        <button class="md:!hidden" mat-icon-button [matMenuTriggerFor]="mobile">
+            <span class="material-icons">menu</span>
+        </button>
+        <mat-menu #mobile="matMenu">
+            <button class="gap-2" mat-menu-item routerLink="/">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">home</span>
+                    <span>Home</span>
+                </div>
+            </button>
+            <button mat-menu-item routerLink="/pokemon">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">catching_pokemon</span>
+                    <span>Pokémon</span>
+                </div>
+            </button>
+            @if (!loggedIn) {
+            <button mat-menu-item routerLink="/login">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">login</span>
+                    <span>Login</span>
+                </div>
+            </button>
+            <button mat-menu-item routerLink="/register">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">person_add</span>
+                    <span>Sign up</span>
+                </div>
+            </button>
+            } @else {
+            <button mat-menu-item disabled>
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">account_circle</span>
+                    <span>{{ username || 'User' }}</span>
+                </div>
+            </button>
+            <button mat-menu-item (click)="onLogout()">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons">logout</span>
+                    <span>Logout</span>
+                </div>
+            </button>
+            }
+        </mat-menu>
+    </mat-toolbar>
+</header>

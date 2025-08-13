@@ -1,1 +1,23 @@
-<p>footer works!</p>
+<footer class="border-t mt-10 bg-[var(--mat-sys-surface)] text-[var(--mat-sys-on-surface)]/80">
+  <div class="container mx-auto px-4 py-8 grid gap-6 md:grid-cols-3">
+    <div class="flex items-center gap-2">
+      <span class="material-icons !text-rose-500">catching_pokemon</span>
+      <div>
+        <div class="font-semibold">Pokehub</div>
+        <div class="text-sm opacity-80">Gotta catch 'em all!</div>
+      </div>
+    </div>
+    <div>
+      <div class="font-medium mb-2">Links</div>
+      <ul class="space-y-1 text-sm">
+        <li><a class="hover:underline" href="https://www.pokemon.com" target="_blank" rel="noreferrer">Official Pokémon</a></li>
+        <li><a class="hover:underline" href="https://material.angular.dev" target="_blank" rel="noreferrer">Angular Material</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-medium mb-2">Contact</div>
+      <div class="text-sm opacity-80">Built with Angular and Nest.js</div>
+    </div>
+  </div>
+  <div class="text-center text-xs py-4 border-t bg-[var(--mat-sys-surface-container)]">© {{ year }} Pokehub</div>
+</footer>
