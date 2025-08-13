@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-carousel',
   imports: [CarouselModule],
   templateUrl: './carousel.html',
-  styleUrl: './carousel.css'
+  styleUrl: './carousel.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Carousel {
   customOptions: OwlOptions = {

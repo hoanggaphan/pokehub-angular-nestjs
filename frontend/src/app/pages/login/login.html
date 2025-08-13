@@ -1,1 +1,54 @@
-<p>login works!</p>
+<section class="min-h-[calc(100vh-4rem)] grid place-items-center px-4 py-10">
+  <mat-card class="w-full max-w-md shadow-xl">
+    <mat-card-header>
+      <span mat-card-avatar class="material-icons !text-rose-500">catching_pokemon</span>
+      <mat-card-title>Login to continue your Pokémon journey</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (errorMessage()) {
+      <div class="mt-2 mb-4 p-3 rounded bg-red-50 text-red-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 mt-4">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          @if (username.touched && username.invalid) {
+          <mat-error>
+            @if (username.errors?.['required']) { Username is required }
+            @if (username.errors?.['minlength']) { Minimum 3 characters }
+          </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password"
+            autocomplete="current-password" />
+          <button matIconButton matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()">
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (password.touched && password.invalid) {
+          <mat-error>
+            @if (password.errors?.['required']) { Password is required }
+            @if (password.errors?.['minlength']) { Minimum 6 characters }
+          </mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="!mt-2" type="submit" [disabled]="isSubmitting() || form.invalid">
+          @if (!isSubmitting()) { Login } @else { Processing... }
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="justify-between px-4 py-2 mt-2">
+      <span class="text-sm text-gray-500">Don't have an account?</span>
+      <a mat-stroked-button color="primary" routerLink="/register">Create account</a>
+    </mat-card-actions>
+  </mat-card>
+</section>

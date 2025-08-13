@@ -1,1 +1,72 @@
-<p>register works!</p>
+<section class="min-h-[calc(100vh-4rem)] grid place-items-center px-4 py-10">
+  <mat-card class="w-full max-w-md shadow-xl">
+    <mat-card-header>
+      <span mat-card-avatar class="material-icons !text-rose-500">catching_pokemon</span>
+      <mat-card-title>Create account</mat-card-title>
+      <mat-card-subtitle>Join and catch your favorites</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (errorMessage()) {
+      <div class="mt-2 mb-4 p-3 rounded bg-red-50 text-red-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 mt-4">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          @if (username.touched && username.invalid) {
+          <mat-error>
+            @if (username.errors?.['required']) { Username is required }
+            @if (username.errors?.['minlength']) { Minimum 3 characters }
+          </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password"
+            autocomplete="new-password" />
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="hidePassword() ? 'Show' : 'Hide'">
+            <span class="material-icons">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</span>
+          </button>
+          @if (password.touched && password.invalid) {
+          <mat-error>
+            @if (password.errors?.['required']) { Password is required }
+            @if (password.errors?.['minlength']) { Minimum 6 characters }
+          </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Confirm Password</mat-label>
+          <input matInput [type]="hidePassword2() ? 'password' : 'text'" formControlName="confirm_password"
+            autocomplete="new-password" />
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword2.set(!hidePassword2())"
+            [attr.aria-label]="hidePassword2() ? 'Show' : 'Hide'">
+            <span class="material-icons">{{ hidePassword2() ? 'visibility' : 'visibility_off' }}</span>
+          </button>
+          @if ((confirm_password.touched && confirm_password.invalid) || form.errors?.['mismatch']) {
+          <mat-error>
+            @if (confirm_password.errors?.['required']) { Please confirm password }
+            @if (confirm_password.errors?.['minlength']) { Minimum 6 characters }
+            @if (form.errors?.['mismatch']) { Passwords do not match }
+          </mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="!mt-2" type="submit" [disabled]="isSubmitting() || form.invalid">
+          @if (!isSubmitting()) { Create account } @else { Processing... }
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="justify-between px-4 py-2 mt-2">
+      <span class="text-sm text-gray-500">Already have an account?</span>
+      <a mat-stroked-button color="primary" routerLink="/login">Login</a>
+    </mat-card-actions>
+  </mat-card>
+</section>

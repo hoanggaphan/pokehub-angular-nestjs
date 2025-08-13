@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -16,10 +16,10 @@ import AuthService from '../../services/auth.service';
     MatMenuModule,
   ],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   private readonly auth = inject(AuthService);
-  isMenuOpen = signal(false);
 
   get loggedIn(): boolean {
     return this.auth.isLogged();
