@@ -28,4 +28,13 @@ export class FavoriteService {
     await this.favoriteRepo.save(fav);
     return { message: 'Marked as favorite' };
   }
+
+  async getFavoritesByUser(userId: number) {
+    const favorites = await this.favoriteRepo.find({
+      where: { user: { id: userId } },
+      relations: ['pokemon'],
+      order: { id: 'DESC' },
+    });
+    return favorites.map((f) => f.pokemon);
+  }
 }

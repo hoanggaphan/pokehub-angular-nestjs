@@ -1,15 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  // UploadedFile,
+  // UseGuards,
+  // UseInterceptors,
 } from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
+// import { FileInterceptor } from '@nestjs/platform-express';
+// import { AccessTokenGuard } from 'src/auth/access-token.guard';
+// import { memoryStorage } from 'multer';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -21,8 +28,25 @@ export class PokemonController {
   }
 
   @Get()
-  findAll() {
-    return this.pokemonService.findAll();
+  findAll(
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('name') name?: string,
+    @Query('type') type?: string,
+    @Query('generation') generation?: string,
+    @Query('legendary') legendary?: string,
+  ) {
+    return this.pokemonService.findAllPaginated({
+      page: page ? Number(page) : 1,
+      limit: limit ? Number(limit) : 20,
+      name: name ?? undefined,
+      type: type ?? undefined,
+      generation: generation ? Number(generation) : undefined,
+      legendary:
+        typeof legendary === 'string'
+          ? legendary.toLowerCase() === 'true'
+          : undefined,
+    });
   }
 
   @Get(':id')
@@ -39,4 +63,11 @@ export class PokemonController {
   remove(@Param('id') id: string) {
     return this.pokemonService.remove(+id);
   }
+
+  // @UseGuards(AccessTokenGuard)
+  // @Post('import')
+  // @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
+  // importCsv(@UploadedFile() file?: { buffer: Buffer }) {
+  //   return this.pokemonService.importFromCsv(file);
+  // }
 }

@@ -1,4 +1,11 @@
-import { Controller, Param, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { AuthenticatedUser } from 'src/auth/types';
 import { AccessTokenGuard } from 'src/auth/access-token.guard';
@@ -10,9 +17,15 @@ export class FavoriteController {
   @UseGuards(AccessTokenGuard)
   @Post(':pokemonId')
   toggleFavorite(
-    @Param('pokemonId') id: number,
+    @Param('pokemonId') pokemonId: string,
     @Request() req: { user: AuthenticatedUser },
   ) {
-    return this.favoriteService.toggle(req.user.id, id);
+    return this.favoriteService.toggle(req.user.id, Number(pokemonId));
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('me')
+  getMyFavorites(@Request() req: { user: AuthenticatedUser }) {
+    return this.favoriteService.getFavoritesByUser(req.user.id);
   }
 }

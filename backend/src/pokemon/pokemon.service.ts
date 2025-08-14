@@ -7,7 +7,7 @@ import {
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { Pokemon } from './entities/pokemon.entity';
 
 @Injectable()
@@ -29,8 +29,58 @@ export class PokemonService {
     }));
   }
 
-  findAll() {
-    return this.pokemonRepository.find();
+  async findAllPaginated(params: {
+    page: number;
+    limit: number;
+    name?: string;
+    type?: string;
+    generation?: number;
+    legendary?: boolean;
+  }) {
+    const { page, limit, name, type, generation, legendary } = params;
+
+    if (page < 1 || limit < 1) {
+      throw new BadRequestException('page and limit must be positive integers');
+    }
+
+    const where: FindOptionsWhere<Pokemon> = {};
+
+    if (name) {
+      where.name = ILike(`%${name}%`);
+    }
+
+    const whereClauses: FindOptionsWhere<Pokemon>[] = [];
+    if (type) {
+      whereClauses.push({ ...where, type1: ILike(type) });
+      whereClauses.push({ ...where, type2: ILike(type) });
+    } else {
+      whereClauses.push(where);
+    }
+
+    if (generation !== undefined) {
+      whereClauses.forEach((w) => (w.generation = generation));
+    }
+
+    if (legendary !== undefined) {
+      whereClauses.forEach((w) => (w.legendary = legendary));
+    }
+
+    const [items, total] = await this.pokemonRepository.findAndCount({
+      where: whereClauses,
+      take: limit,
+      skip: (page - 1) * limit,
+      order: { id: 'ASC' },
+    });
+
+    return {
+      data: items,
+      meta: {
+        total,
+        page,
+        limit,
+        pageCount: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: number) {
@@ -65,5 +115,11 @@ export class PokemonService {
       statusCode: HttpStatus.OK,
       message: 'Delete success',
     }));
+  }
+
+  importFromCsv() {
+    return {
+      statusCode: HttpStatus.OK,
+    };
   }
 }
