@@ -6,6 +6,7 @@ import AuthService from '../../../services/auth.service';
   selector: 'app-import',
   imports: [],
   templateUrl: './import.html',
+  styleUrl: './import.css',
 })
 export class Import {
   private pokemonService = inject(PokemonService)

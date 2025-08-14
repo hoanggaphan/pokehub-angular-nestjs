@@ -3,6 +3,10 @@
     <span class="material-icons !text-rose-500">file_upload</span>
     Import CSV
   </button>
-  @if (uploading) { <span class="text-sm opacity-70">Uploading...</span> }
+  @if (uploading) { 
+    <div class="uploading-overlay">
+      <span class="uploading-text">Uploading CSV file...</span>
+    </div>
+  }
   <input #fileInput hidden type="file" accept=".csv" (change)="onFileChange($event)" />
 </div>
