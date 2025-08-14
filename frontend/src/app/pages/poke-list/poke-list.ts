@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { PokemonStore } from '../../store/pokemon.store';
 import { Pokemon } from '../../models/Pokemon';
-import PokemonService from '../../services/pokemon.service';
+import { PokemonStore } from '../../store/pokemon.store';
 import { PokemonCard } from '../../ui/pokemon-card/pokemon-card';
+import { Import } from './import/import';
+import { PokemonDetailModal } from '../../ui/pokemon-detail-modal/pokemon-detail-modal';
 
 @Component({
   selector: 'app-poke-list',
-  imports: [CommonModule, FormsModule, RouterModule, PokemonCard],
+  imports: [CommonModule, FormsModule, RouterModule, PokemonCard, PokemonDetailModal, Import],
   providers: [PokemonStore],
   templateUrl: './poke-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,5 +31,15 @@ export class PokeList implements OnInit {
   ngOnInit(): void {
     // load initial
     this.store.load()
+  }
+
+  selectedPokemon = signal<Pokemon | null>(null)
+
+  openDetail(pokemon: Pokemon) {
+    this.selectedPokemon.set(pokemon)
+  }
+
+  closeDetail() {
+    this.selectedPokemon.set(null)
   }
 }

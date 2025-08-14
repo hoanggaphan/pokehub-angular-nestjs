@@ -25,10 +25,7 @@
       <input class="border rounded px-3 py-2 w-24" type="number" [ngModel]="speedMax()" (ngModelChange)="speedMax.set($event); store.updateFilter({ speedMax: $event === null || $event === '' ? null : (+$event), page: 1 }); store.load()" />
     </div>
     <div class="ml-auto">
-      <a class="inline-flex items-center gap-2 border rounded px-3 py-2 hover:bg-gray-50" routerLink="/upload">
-        <span class="material-icons !text-rose-500">file_upload</span>
-        Import CSV
-      </a>
+      <app-import (imported)="store.load()" />
     </div>
   </div>
 
@@ -44,7 +41,7 @@
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     @for (p of store.sortedPokemon(); track p.id) {
-      <app-pokemon-card [pokemon]="p" />
+      <app-pokemon-card [pokemon]="p" (view)="openDetail($event)" />
     }
   </div>
 
@@ -52,5 +49,9 @@
     <button class="border rounded px-3 py-1" [disabled]="store.page() <= 1" (click)="store.setPage(store.page() - 1); store.load()">Prev</button>
     <button class="border rounded px-3 py-1" [disabled]="store.page() >= store.pageCount()" (click)="store.setPage(store.page() + 1); store.load()">Next</button>
   </div>
+
+  @if (selectedPokemon()) {
+    <app-pokemon-detail-modal [pokemon]="selectedPokemon()!" (closed)="closeDetail()" />
+  }
 </div>
 
