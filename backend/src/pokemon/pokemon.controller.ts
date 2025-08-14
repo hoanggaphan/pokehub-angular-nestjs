@@ -7,16 +7,15 @@ import {
   Patch,
   Post,
   Query,
-  // UploadedFile,
-  // UseGuards,
-  // UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { PokemonService } from './pokemon.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AccessTokenGuard } from 'src/auth/access-token.guard';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
-// import { FileInterceptor } from '@nestjs/platform-express';
-// import { AccessTokenGuard } from 'src/auth/access-token.guard';
-// import { memoryStorage } from 'multer';
+import { PokemonService } from './pokemon.service';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -64,10 +63,13 @@ export class PokemonController {
     return this.pokemonService.remove(+id);
   }
 
-  // @UseGuards(AccessTokenGuard)
-  // @Post('import')
-  // @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
-  // importCsv(@UploadedFile() file?: { buffer: Buffer }) {
-  //   return this.pokemonService.importFromCsv(file);
-  // }
+  @UseGuards(AccessTokenGuard)
+  @Post('import-csv')
+  @UseInterceptors(FileInterceptor('file'))
+  importCsv(
+    @UploadedFile()
+    file: Express.Multer.File,
+  ) {
+    return this.pokemonService.importFromCsv(file);
+  }
 }

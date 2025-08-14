@@ -117,7 +117,25 @@ export class PokemonService {
     }));
   }
 
-  importFromCsv() {
+  importFromCsv(file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('no file uploaded');
+    }
+
+    // validate file type
+    const allowedMimeTypes = ['text/csv'];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+      throw new BadRequestException('invalid file type');
+    }
+
+    // validate file size (e.g., max 5mb)
+    const maxSize = 5 * 1024 * 1024;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (file.size > maxSize) {
+      throw new BadRequestException('file is too large!');
+    }
+
     return {
       statusCode: HttpStatus.OK,
     };

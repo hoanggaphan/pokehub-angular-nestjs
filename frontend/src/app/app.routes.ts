@@ -20,6 +20,18 @@ export const routes: Routes = [
                 path: 'pokemon',
                 loadComponent: () => import('./pages/poke-list/poke-list').then(m => m.PokeList),
             },
+            {
+                title: 'Upload Page',
+                path: 'upload',
+                loadComponent: () => import('./pages/upload/upload').then(m => m.Upload),
+                canActivate: [AuthGuard],
+            },
+            {
+                title: 'Favorites Page',
+                path: 'favorites',
+                loadComponent: () => import('./pages/favorites/favorites').then(m => m.Favorites),
+                canActivate: [AuthGuard],
+            },
         ]
     },
     {

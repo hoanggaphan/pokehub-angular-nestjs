@@ -9,6 +9,7 @@
         <nav class="hidden md:flex items-center gap-2">
             <a mat-button routerLink="/" class="!text-[var(--mat-sys-on-surface)]">Home</a>
             <a mat-button routerLink="/pokemon" class="!text-[var(--mat-sys-on-surface)]">Pokémon</a>
+            <a mat-button routerLink="/upload" class="!text-[var(--mat-sys-on-surface)]">Upload</a>
         </nav>
 
         <div class="hidden md:flex items-center gap-2">
@@ -22,13 +23,17 @@
                 <span>{{ username || 'User' }}</span>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item routerLink="/pokemon">
-                    <span class="material-icons">list</span>
-                    <span>My Pokémon</span>
+                <button mat-menu-item routerLink="/favorites">
+                    <div class="flex items-center gap-2">
+                        <span class="material-icons">list</span>
+                        <span>My Pokémon</span>
+                    </div>
                 </button>
                 <button mat-menu-item (click)="onLogout()">
-                    <span class="material-icons">logout</span>
-                    <span>Logout</span>
+                    <div class="flex items-center gap-2">
+                        <span class="material-icons">logout</span>
+                        <span>Logout</span>
+                    </div>
                 </button>
             </mat-menu>
             }

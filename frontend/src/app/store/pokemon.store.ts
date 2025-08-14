@@ -9,7 +9,7 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { PokemonService } from '../services/pokemon.service';
+import PokemonService from '../services/pokemon.service';
 import { Pokemon } from '../models/Pokemon';
 
 type PokemonState = {
