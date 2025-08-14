@@ -13,12 +13,7 @@ import { FavoriteModule } from './favorite/favorite.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT ?? '5432', 10),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS?.toString(),
-      database: process.env.DB_NAME,
-      autoLoadEntities: true,
+      url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'development',
     }),
     AuthModule,
