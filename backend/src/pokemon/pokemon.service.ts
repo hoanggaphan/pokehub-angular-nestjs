@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   BadRequestException,
   HttpStatus,
@@ -9,6 +14,9 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { Pokemon } from './entities/pokemon.entity';
+import fs from 'fs';
+import { Readable } from 'stream';
+import * as csv from 'fast-csv';
 
 @Injectable()
 export class PokemonService {
@@ -123,21 +131,76 @@ export class PokemonService {
     }
 
     // validate file type
-    const allowedMimeTypes = ['text/csv'];
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    const allowedMimeTypes = [
+      'text/csv',
+      'application/csv',
+      'application/x-csv',
+      'text/comma-separated-values',
+      'application/vnd.ms-excel',
+    ];
     if (!allowedMimeTypes.includes(file.mimetype)) {
       throw new BadRequestException('invalid file type');
     }
 
     // validate file size (e.g., max 5mb)
     const maxSize = 5 * 1024 * 1024;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (file.size > maxSize) {
       throw new BadRequestException('file is too large!');
     }
 
-    return {
-      statusCode: HttpStatus.OK,
-    };
+    const pokemons: Pokemon[] = [];
+
+    return new Promise((resolve, reject) => {
+      const parseStream = csv.parse({ headers: true, ignoreEmpty: true });
+
+      parseStream
+        .on('error', (error) => reject(error))
+        .on('data', (row) => {
+          const p = new Pokemon();
+          p.name = row.name;
+          p.type1 = row.type1;
+          p.type2 = row.type2 || null;
+          p.total = Number(row.total);
+          p.hp = Number(row.hp);
+          p.attack = Number(row.attack);
+          p.defense = Number(row.defense);
+          p.spAttack = Number(row.spAttack);
+          p.spDefense = Number(row.spDefense);
+          p.speed = Number(row.speed);
+          p.generation = Number(row.generation);
+          p.legendary = row.legendary?.toLowerCase() === 'true';
+          p.ytbUrl = row.ytbUrl || null;
+
+          pokemons.push(p);
+        })
+        .on('end', async () => {
+          try {
+            await this.pokemonRepository.save(pokemons);
+            if (file.path) {
+              try {
+                fs.unlinkSync(file.path);
+              } catch {
+                // ignore cleanup errors
+              }
+            }
+            resolve({
+              statusCode: HttpStatus.OK,
+              message: `Imported ${pokemons.length} Pokémon successfully`,
+            });
+          } catch (err) {
+            console.log(err);
+            reject(new BadRequestException((err as Error).message));
+          }
+        });
+
+      if (file.path) {
+        fs.createReadStream(file.path).pipe(parseStream);
+      } else if ((file as any).buffer) {
+        const buffer: Buffer = (file as any).buffer as Buffer;
+        Readable.from(buffer).pipe(parseStream);
+      } else {
+        reject(new BadRequestException('uploaded file has no path or buffer'));
+      }
+    });
   }
 }
