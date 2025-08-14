@@ -1,0 +1,17 @@
+<article class="rounded-md border border-gray-200 shadow-sm overflow-hidden bg-white">
+  <img class="w-full h-40 object-cover" [src]="pokemon.image" [alt]="pokemon.name" />
+  <div class="p-3">
+    <h3 class="text-sm font-semibold">#{{ pokemon.id }} · {{ pokemon.name }}</h3>
+    <div class="mt-1 text-xs text-gray-500">
+      <span class="inline-block px-2 py-0.5 rounded bg-slate-100 mr-1">{{ pokemon.type1 }}</span>
+      @if (pokemon.type2) {
+        <span class="inline-block px-2 py-0.5 rounded bg-slate-100">{{ pokemon.type2 }}</span>
+      }
+    </div>
+  </div>
+  @if (pokemon.ytbUrl) {
+    <a class="block text-center text-blue-600 text-xs py-2 border-t hover:underline" [href]="pokemon.ytbUrl" target="_blank" rel="noopener noreferrer">Watch trailer</a>
+  }
+</article>
+
+

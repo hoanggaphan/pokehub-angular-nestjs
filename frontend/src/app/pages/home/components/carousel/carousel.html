@@ -1,20 +1,18 @@
-<div class="container mx-auto">
-    @if (videos().length > 0) {
-        <owl-carousel-o [options]="customOptions">
-            @for (video of videos(); track video.id) {
-                <ng-template carouselSlide [id]="toIdString(video.id)">
-                    <a class="slide"
-                        [href]="video.ytbUrl"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        [attr.aria-label]="video.name">
-                        <img class="slide-image" [src]="video.image" [alt]="video.name" />
-                        <div class="slide-caption">{{ video.name }}</div>
-                    </a>
-                </ng-template>
-            }
-        </owl-carousel-o>
-    } @else {
-        <div class="slide-placeholder">Loading trailers...</div>
-    }
-</div>
+@if (videos().length > 0) {
+    <owl-carousel-o [options]="customOptions">
+        @for (video of videos(); track video.id) {
+            <ng-template carouselSlide [id]="toIdString(video.id)">
+                <a class="slide"
+                    [href]="video.ytbUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    [attr.aria-label]="video.name">
+                    <img class="slide-image" [src]="video.image" [alt]="video.name" />
+                    <div class="slide-caption">{{ video.name }}</div>
+                </a>
+            </ng-template>
+        }
+    </owl-carousel-o>
+} @else {
+    <div class="slide-placeholder">Loading trailers...</div>
+}

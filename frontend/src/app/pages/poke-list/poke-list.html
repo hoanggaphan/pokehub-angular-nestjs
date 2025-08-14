@@ -1,1 +1,8 @@
-<p>poke-list works!</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  @for (p of pokemons(); track p.id) {
+    <app-pokemon-card [pokemon]="p"></app-pokemon-card>
+  }
+  @empty {
+    <div class="col-span-full text-center py-8">Loading Pokémon...</div>
+  }
+</div>
