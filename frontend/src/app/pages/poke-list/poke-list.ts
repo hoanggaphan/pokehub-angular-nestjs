@@ -74,4 +74,24 @@ export class PokeList implements OnInit {
     // Navigate to catch page (you can create this route later)
     this.router.navigate(['/catch'])
   }
+
+  clearFilters() {
+    // Reset all filters
+    this.q.set('')
+    this.type.set(undefined)
+    this.legendary.set('')
+    this.speedMin.set(null)
+    this.speedMax.set(null)
+    
+    // Update store filters and reload
+    this.store.updateFilter({
+      query: '',
+      type: undefined,
+      legendary: null,
+      speedMin: null,
+      speedMax: null,
+      page: 1
+    })
+    this.store.load()
+  }
 }

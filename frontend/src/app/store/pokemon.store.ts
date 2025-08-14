@@ -15,6 +15,7 @@ import { Pokemon } from '../models/Pokemon';
 type PokemonState = {
     pokemon: Pokemon[];
     isLoading: boolean;
+    hasInitialData: boolean;
     filter: {
         query: string;
         order: 'asc' | 'desc';
@@ -36,13 +37,14 @@ type PokemonState = {
 const initialState: PokemonState = {
     pokemon: [],
     isLoading: false,
+    hasInitialData: false,
     filter: { query: '', order: 'asc', page: 1, limit: 20, legendary: null, speedMin: null, speedMax: null },
     meta: { total: 0, page: 1, limit: 20, pageCount: 0 },
 };
 
 export const PokemonStore = signalStore(
     withState(initialState),
-    withComputed(({ pokemon, filter, meta }) => ({
+    withComputed(({ pokemon, filter, meta, hasInitialData }) => ({
         pokemonCount: computed(() => pokemon().length),
         sortedPokemon: computed(() => {
             const direction = filter.order() === 'asc' ? 1 : -1;
@@ -55,6 +57,8 @@ export const PokemonStore = signalStore(
         limit: computed(() => filter.limit()),
         total: computed(() => meta.total()),
         pageCount: computed(() => meta.pageCount()),
+        isEmptyInitialState: computed(() => !hasInitialData() && pokemon().length === 0),
+        hasNoSearchResults: computed(() => hasInitialData() && pokemon().length === 0),
     })),
     withMethods((store, pokemonService = inject(PokemonService)) => ({
         updateFilter(filter: Partial<PokemonState['filter']>): void {
@@ -103,7 +107,7 @@ export const PokemonStore = signalStore(
                         speedMax: f.speedMax == null ? undefined : f.speedMax,
                     }).pipe(
                         tapResponse({
-                            next: (res: PageResponse<Pokemon>) => patchState(store, { pokemon: res.data, meta: res.meta }),
+                            next: (res: PageResponse<Pokemon>) => patchState(store, { pokemon: res.data, meta: res.meta, hasInitialData: true }),
                             error: console.error,
                             finalize: () => patchState(store, { isLoading: false }),
                         })
