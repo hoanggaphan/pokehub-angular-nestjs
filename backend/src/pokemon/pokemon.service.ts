@@ -142,13 +142,15 @@ export class PokemonService {
       throw new BadRequestException('invalid file type');
     }
 
-    // validate file size (e.g., max 5mb)
-    const maxSize = 5 * 1024 * 1024;
+    // Validate file size (max 20MB)
+    const maxSize = 20 * 1024 * 1024;
     if (file.size > maxSize) {
-      throw new BadRequestException('file is too large!');
+      throw new BadRequestException('File is too large!');
     }
 
-    const pokemons: Pokemon[] = [];
+    const BATCH_SIZE = 1000; // số bản ghi insert mỗi batch
+    let batch: Pokemon[] = [];
+    let totalInserted = 0;
 
     return new Promise((resolve, reject) => {
       const parseStream = csv.parse({ headers: true, ignoreEmpty: true });
@@ -170,25 +172,51 @@ export class PokemonService {
           p.generation = Number(row.generation);
           p.legendary = row.legendary?.toLowerCase() === 'true';
           p.ytbUrl = row.ytbUrl || null;
+          p.image = row.image || '';
 
-          pokemons.push(p);
+          batch.push(p);
+
+          // Nếu đủ batch thì insert ngay
+          if (batch.length >= BATCH_SIZE) {
+            parseStream.pause();
+            this.pokemonRepository.manager
+              .transaction(async (manager) => {
+                await manager.insert(Pokemon, batch);
+              })
+              .then(() => {
+                totalInserted += batch.length;
+                batch = [];
+                parseStream.resume();
+              })
+              .catch((err) => {
+                console.error(`Batch insert failed: ${err.message}`);
+                reject(new BadRequestException(err.message));
+              });
+          }
         })
         .on('end', async () => {
           try {
-            await this.pokemonRepository.save(pokemons);
-            if (file.path) {
-              try {
-                fs.unlinkSync(file.path);
-              } catch {
-                // ignore cleanup errors
-              }
+            // Insert phần còn lại
+            if (batch.length > 0) {
+              await this.pokemonRepository.manager.transaction(
+                async (manager) => {
+                  await manager.insert(Pokemon, batch);
+                },
+              );
+              totalInserted += batch.length;
             }
+
+            // Xóa file sau khi import
+            if (file.path) {
+              fs.unlinkSync(file.path);
+            }
+
             resolve({
               statusCode: HttpStatus.OK,
-              message: `Imported ${pokemons.length} Pokémon successfully`,
+              message: `Imported ${totalInserted} Pokémon successfully`,
             });
           } catch (err) {
-            console.log(err);
+            console.error(`Final batch insert failed: ${err.message}`);
             reject(new BadRequestException((err as Error).message));
           }
         });
