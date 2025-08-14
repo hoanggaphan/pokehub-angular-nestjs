@@ -1,33 +1,64 @@
-<div class="container mx-auto p-4">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-xl font-semibold flex items-center gap-2">
-      <span class="material-icons !text-rose-500">favorite</span>
+<div class="container mx-auto p-4 space-y-4">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold flex items-center gap-3 text-gray-800">
+      <span class="material-icons text-rose-500 text-3xl">favorite</span>
       My Favorite Pokémon
     </h2>
+    <div class="text-sm text-gray-600">
+      {{ pokemons().length }} Pokémon in your collection
+    </div>
   </div>
 
-  <div *ngIf="loading" class="opacity-70">Loading...</div>
-  <div *ngIf="!loading && pokemons.length === 0" class="opacity-70">Chưa có Pokémon yêu thích.</div>
+  @if (loading()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (s of skeletonItems; track s) {
+        <div class="card-skeleton">
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-title shimmer"></div>
+          <div class="skel-badges">
+            <span class="skel-badge shimmer"></span>
+            <span class="skel-badge shimmer"></span>
+          </div>
+          <div class="skel-actions">
+            <span class="skel-btn shimmer"></span>
+            <span class="skel-btn shimmer"></span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (pokemons().length === 0) {
+    <div class="empty-favorites-state">
+      <div class="empty-illustration">💔</div>
+      <h3>No Favorite Pokémon Yet!</h3>
+      <p>Start building your collection by adding Pokémon to your favorites from the main list.</p>
+      <div class="empty-actions">
+        <button class="btn-explore" (click)="navigateToPokeList()">
+          <span class="material-icons">explore</span>
+          Explore Pokémon
+        </button>
+      </div>
+      <div class="empty-features">
+        <div class="feature-card">
+          <div class="feature-icon">⭐</div>
+          <h4>Add Favorites</h4>
+          <p>Click the heart icon on any Pokémon to add it to your favorites</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👀</div>
+          <h4>Quick Access</h4>
+          <p>Your favorite Pokémon are always just one click away</p>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (p of pokemons(); track p.id) {
+        <app-pokemon-card [pokemon]="p" [favorite]="true" (toggleFavorite)="handleToggleFavorite($event)" (view)="openDetail($event)" />
+      }
+    </div>
+  }
 
-  <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-    <mat-card appearance="outlined" *ngFor="let p of pokemons">
-      <img mat-card-image [src]="p.image" [alt]="p.name" />
-      <mat-card-header>
-        <div class="flex justify-between items-center w-full">
-          <div class="font-semibold">{{ p.name }}</div>
-          <button mat-icon-button color="warn" (click)="toggleFavorite(p)" matTooltip="Remove from favorites">
-            <span class="material-icons">favorite</span>
-          </button>
-        </div>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="flex gap-2">
-          <mat-chip-set>
-            <mat-chip color="primary" selected>{{ p.type1 }}</mat-chip>
-            <mat-chip *ngIf="p.type2" color="primary" selected>{{ p.type2 }}</mat-chip>
-          </mat-chip-set>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  @if (selectedPokemon()) {
+    <app-pokemon-detail-modal [pokemon]="selectedPokemon()!" [favorite]="true" (toggleFavorite)="handleToggleFavorite($event)" (closed)="closeDetail()" />
+  }
 </div>
