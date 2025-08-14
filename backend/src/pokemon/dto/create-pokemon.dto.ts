@@ -57,6 +57,9 @@ export class CreatePokemonDto {
   @IsBoolean()
   legendary: boolean;
 
+  @IsString()
+  image: string;
+
   @IsOptional()
   @IsString()
   ytbUrl?: string;

@@ -42,6 +42,9 @@ export class Pokemon {
   @Column()
   legendary: boolean;
 
+  @Column()
+  image: string;
+
   @Column({ name: 'ytb_url', nullable: true })
   ytbUrl: string;
 }

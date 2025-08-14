@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { UpdateFavoriteDto } from './dto/update-favorite.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Favorite } from './entities/favorite.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FavoriteService {
-  create(createFavoriteDto: CreateFavoriteDto) {
-    return 'This action adds a new favorite';
-  }
+  constructor(
+    @InjectRepository(Favorite)
+    private favoriteRepo: Repository<Favorite>,
+  ) {}
 
-  findAll() {
-    return `This action returns all favorite`;
-  }
+  async toggle(userId: number, pokemonId: number) {
+    const existing = await this.favoriteRepo.findOne({
+      where: { user: { id: userId }, pokemon: { id: pokemonId } },
+      relations: ['user', 'pokemon'],
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} favorite`;
-  }
+    if (existing) {
+      await this.favoriteRepo.remove(existing);
+      return { message: 'Unmarked as favorite' };
+    }
 
-  update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
-    return `This action updates a #${id} favorite`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} favorite`;
+    const fav = this.favoriteRepo.create({
+      user: { id: userId },
+      pokemon: { id: pokemonId },
+    });
+    await this.favoriteRepo.save(fav);
+    return { message: 'Marked as favorite' };
   }
 }
