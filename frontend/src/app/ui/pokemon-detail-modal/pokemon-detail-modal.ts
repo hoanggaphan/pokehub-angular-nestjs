@@ -11,10 +11,16 @@ import { Pokemon } from '../../models/Pokemon';
 })
 export class PokemonDetailModal {
   @Input({ required: true }) pokemon!: Pokemon
+  @Input() favorite = false
   @Output() closed = new EventEmitter<void>()
+  @Output() toggleFavorite = new EventEmitter<Pokemon>()
 
   onClose() {
     this.closed.emit()
+  }
+
+  onToggleFavorite() {
+    this.toggleFavorite.emit(this.pokemon)
   }
 }
 

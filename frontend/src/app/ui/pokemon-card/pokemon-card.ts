@@ -11,10 +11,16 @@ import { Pokemon } from '../../models/Pokemon';
 })
 export class PokemonCard {
   @Input({ required: true }) pokemon!: Pokemon
+  @Input() favorite = false
   @Output() view = new EventEmitter<Pokemon>()
+  @Output() toggleFavorite = new EventEmitter<Pokemon>()
 
   onViewDetail() {
     this.view.emit(this.pokemon)
+  }
+
+  onToggleFavorite() {
+    this.toggleFavorite.emit(this.pokemon)
   }
 }
 
