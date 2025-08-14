@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Carousel } from './components/carousel/carousel';
-import { PokeList } from "../poke-list/poke-list";
+import { PokeList } from './components/poke-list/poke-list';
 
 @Component({
   selector: 'app-home',
