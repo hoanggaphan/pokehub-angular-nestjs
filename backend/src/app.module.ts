@@ -15,6 +15,7 @@ import { FavoriteModule } from './favorite/favorite.module';
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'development',
+      autoLoadEntities: true,
     }),
     AuthModule,
     UserModule,
