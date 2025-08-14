@@ -19,7 +19,7 @@ import { UserModule } from './user/user.module';
       password: process.env.DB_PASS?.toString(),
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
     }),
     AuthModule,
     PokemonModule,

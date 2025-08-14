@@ -17,7 +17,6 @@ export class AuthService {
     pass: string,
   ): Promise<Omit<User, 'password'> | null> {
     const user = await this.userService.findByName(username);
-
     const isMatch: boolean = await (
       bcryptCompare as unknown as (
         data: string,
@@ -26,8 +25,8 @@ export class AuthService {
     )(pass, (user as unknown as { password: string }).password);
     if (!isMatch) return null;
 
-    const res = user as Omit<User, 'password'>;
-    return res;
+    Reflect.deleteProperty(user, 'password');
+    return user;
   }
 
   login(user: AuthenticatedUser) {
