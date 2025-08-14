@@ -71,6 +71,6 @@ export class Favorites {
   }
 
   navigateToPokeList() {
-    this.router.navigate(['/poke-list']);
+    this.router.navigate(['/pokemon']);
   }
 }
