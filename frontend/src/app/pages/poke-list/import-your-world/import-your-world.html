@@ -1,0 +1,10 @@
+<button class="btn-import" (click)="trigger(fileInput)">
+  <span class="material-icons">file_upload</span>
+  Import Your World
+</button>
+@if (uploading) { 
+  <div class="uploading-overlay">
+    <span class="uploading-text">Uploading your Pokémon world...</span>
+  </div>
+}
+<input #fileInput hidden type="file" accept=".csv" (change)="onFileChange($event)" />

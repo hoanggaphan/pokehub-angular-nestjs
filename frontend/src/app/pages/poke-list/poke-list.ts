@@ -6,13 +6,15 @@ import { Pokemon } from '../../models/Pokemon';
 import { PokemonStore } from '../../store/pokemon.store';
 import { PokemonCard } from '../../ui/pokemon-card/pokemon-card';
 import { Import } from './import/import';
+import { ImportYourWorld } from './import-your-world/import-your-world';
 import { PokemonDetailModal } from '../../ui/pokemon-detail-modal/pokemon-detail-modal';
 
 @Component({
   selector: 'app-poke-list',
-  imports: [CommonModule, FormsModule, RouterModule, PokemonCard, PokemonDetailModal, Import],
+  imports: [CommonModule, FormsModule, RouterModule, PokemonCard, PokemonDetailModal, Import, ImportYourWorld],
   providers: [PokemonStore],
   templateUrl: './poke-list.html',
+  styleUrl: './poke-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokeList implements OnInit {
@@ -27,6 +29,7 @@ export class PokeList implements OnInit {
   speedMax = signal<number | null>(null)
 
   limits = [10, 20, 50, 100]
+  skeletonItems = Array.from({ length: 8 })
 
   ngOnInit(): void {
     // load initial
@@ -41,5 +44,10 @@ export class PokeList implements OnInit {
 
   closeDetail() {
     this.selectedPokemon.set(null)
+  }
+
+  navigateToCatch() {
+    // Navigate to catch page (you can create this route later)
+    this.router.navigate(['/catch'])
   }
 }

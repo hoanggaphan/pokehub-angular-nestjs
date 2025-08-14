@@ -26,6 +26,12 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/favorites/favorites').then(m => m.Favorites),
                 canActivate: [AuthGuard],
             },
+            {
+                title: 'Catch Pokemon Page',
+                path: 'catch',
+                loadComponent: () => import('./pages/catch/catch').then(m => m.Catch),
+                canActivate: [AuthGuard],
+            },
         ]
     },
     {

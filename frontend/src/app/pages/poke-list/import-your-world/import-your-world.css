@@ -1,0 +1,76 @@
+.btn-import {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(225,29,72,.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-import:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(225,29,72,.35);
+  filter: brightness(1.05);
+}
+
+.btn-import:active {
+  transform: translateY(-1px);
+}
+
+.btn-import .material-icons {
+  font-size: 20px;
+}
+
+.uploading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.uploading-text {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px 32px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .btn-import {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  
+  .btn-import .material-icons {
+    font-size: 18px;
+  }
+  
+  .uploading-text {
+    font-size: 16px;
+    padding: 16px 24px;
+  }
+}

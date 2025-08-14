@@ -39,11 +39,55 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    @for (p of store.sortedPokemon(); track p.id) {
-      <app-pokemon-card [pokemon]="p" (view)="openDetail($event)" />
-    }
-  </div>
+  @if (store.isLoading()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (s of skeletonItems; track s) {
+        <div class="card-skeleton">
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-title shimmer"></div>
+          <div class="skel-badges">
+            <span class="skel-badge shimmer"></span>
+            <span class="skel-badge shimmer"></span>
+          </div>
+          <div class="skel-actions">
+            <span class="skel-btn shimmer"></span>
+            <span class="skel-btn shimmer"></span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (store.sortedPokemon().length === 0) {
+    <div class="empty-state">
+      <div class="empty-illustration">🌟</div>
+      <h3>Your Pokémon World is Empty!</h3>
+      <p>Start building your collection by importing your favorite Pokémon or catching new ones in the wild.</p>
+      <div class="empty-actions">
+        <app-import-your-world (imported)="store.load()" />
+        <button class="btn-catch" (click)="navigateToCatch()">
+          <span class="material-icons">catching_pokemon</span>
+          Go Catching
+        </button>
+      </div>
+      <div class="empty-features">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h4>Import CSV</h4>
+          <p>Upload your Pokémon collection from a CSV file</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h4>Catch Pokémon</h4>
+          <p>Discover and catch new Pokémon in the wild</p>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (p of store.sortedPokemon(); track p.id) {
+        <app-pokemon-card [pokemon]="p" (view)="openDetail($event)" />
+      }
+    </div>
+  }
 
   <div class="flex items-center justify-center gap-2">
     <button class="border rounded px-3 py-1" [disabled]="store.page() <= 1" (click)="store.setPage(store.page() - 1); store.load()">Prev</button>

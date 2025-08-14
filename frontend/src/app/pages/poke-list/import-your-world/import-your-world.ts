@@ -3,11 +3,12 @@ import PokemonService from '../../../services/pokemon.service';
 import AuthService from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-import',
+  selector: 'app-import-your-world',
   imports: [],
-  templateUrl: './import.html',
+  templateUrl: './import-your-world.html',
+  styleUrl: './import-your-world.css'
 })
-export class Import {
+export class ImportYourWorld {
   private pokemonService = inject(PokemonService)
   private authService = inject(AuthService)
 
@@ -18,7 +19,7 @@ export class Import {
 
   trigger(input: HTMLInputElement) {
     if (!this.authService.isLogged()) {
-      alert('Vui lòng đăng nhập để import CSV')
+      alert('Please login to import CSV')
       return
     }
     input.click()
@@ -29,7 +30,7 @@ export class Import {
     if (input.files && input.files.length > 0) {
       const selected = input.files[0]
       if (!this.isCsvFile(selected)) {
-        alert('Chỉ chấp nhận file CSV (.csv)')
+        alert('Only CSV files (.csv) are accepted')
         input.value = ''
         this.file = undefined
         return
@@ -52,13 +53,13 @@ export class Import {
     this.pokemonService.importCsv(this.file).subscribe({
       next: () => {
         this.uploading = false
-        alert('Import thành công!')
+        alert('Import successful!')
         this.imported.emit()
         this.file = undefined
       },
       error: (err) => {
         this.uploading = false
-        alert(err?.error?.message || 'Import thất bại')
+        alert(err?.error?.message || 'Import failed')
       }
     })
   }
