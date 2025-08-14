@@ -1,0 +1,22 @@
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.45) 50%, rgba(255,255,255,0) 100%); animation: shimmer 1.3s infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+.card-skeleton { display: grid; grid-template-rows: 150px auto auto auto; gap: 10px; padding: 10px; border-radius: 12px; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 6px 14px rgba(0,0,0,.04); }
+.skel-thumb { height: 150px; border-radius: 8px; background: #f3f4f6; }
+.skel-title { height: 16px; width: 70%; border-radius: 6px; background: #f3f4f6; }
+.skel-badges { display: flex; gap: 8px; }
+.skel-badge { width: 64px; height: 22px; border-radius: 999px; background: #f3f4f6; }
+.skel-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.skel-btn { height: 36px; border-radius: 8px; background: #f3f4f6; }
+
+.empty-state { display: grid; place-items: center; text-align: center; padding: 40px 16px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 6px 14px rgba(0,0,0,.04); }
+.empty-illustration { width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center; font-size: 30px; background: #f1f5f9; margin-bottom: 8px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+.empty-state h3 { margin: 6px 0; font-size: 18px; }
+.empty-state p { margin: 0 0 14px; color: #6b7280; }
+.empty-actions { display: flex; justify-content: center; }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: 10px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #e11d48, #be123c); border: none; cursor: pointer; box-shadow: 0 10px 18px rgba(225,29,72,.25); transition: all 0.2s ease; }
+.btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(225,29,72,.35); }
+
+

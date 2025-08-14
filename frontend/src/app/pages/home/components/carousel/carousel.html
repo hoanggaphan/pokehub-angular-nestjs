@@ -1,4 +1,10 @@
-@if (videos().length > 0) {
+@if (isLoading()) {
+    <div class="carousel-skeleton">
+        @for (s of skeletonSlides; track s) {
+            <div class="slide skel-slide shimmer"></div>
+        }
+    </div>
+} @else if (videos().length > 0) {
     <owl-carousel-o [options]="customOptions">
         @for (video of videos(); track video.id) {
             <ng-template carouselSlide [id]="toIdString(video.id)">
@@ -14,5 +20,9 @@
         }
     </owl-carousel-o>
 } @else {
-    <div class="slide-placeholder">Loading trailers...</div>
+    <div class="carousel-empty">
+        <div class="empty-illustration">🎬</div>
+        <h3>No trailers available</h3>
+        <p>Check back later for exciting Pokémon trailers!</p>
+    </div>
 }

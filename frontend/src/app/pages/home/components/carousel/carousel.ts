@@ -25,13 +25,21 @@ export class Carousel implements OnInit {
     nav: true
   }
   videos = signal<Pokemon[]>([])
+  isLoading = signal<boolean>(false)
+  skeletonSlides = Array.from({ length: 3 })
 
   private pokemonService = inject(PokemonService)
 
   ngOnInit(): void {
+    this.isLoading.set(true)
     this.pokemonService.getRandomTrailers().subscribe({
       next: (pokemons) => {
         this.videos.set(pokemons)
+        this.isLoading.set(false)
+      },
+      error: () => {
+        this.videos.set([])
+        this.isLoading.set(false)
       }
     })
   }

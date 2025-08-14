@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { PokemonStore } from '../../../../store/pokemon.store';
 import { PokemonCard } from '../../../../ui/pokemon-card/pokemon-card';
 import { PokemonDetailModal } from '../../../../ui/pokemon-detail-modal/pokemon-detail-modal';
@@ -11,14 +12,17 @@ import { Pokemon } from '../../../../models/Pokemon';
   imports: [PokemonCard, PokemonDetailModal],
   providers: [PokemonStore],
   templateUrl: './poke-list.html',
+  styleUrl: './poke-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokeList implements OnInit {
   store = inject(PokemonStore)
   private authService = inject(AuthService)
   private favoritesService = inject(FavoritesService)
+  private router = inject(Router)
   selectedPokemon = signal<Pokemon | null>(null)
   favoriteIdSet = signal<Set<number>>(new Set())
+  skeletonItems = Array.from({ length: 10 })
 
   ngOnInit(): void {
     this.store.load()
@@ -50,5 +54,14 @@ export class PokeList implements OnInit {
         this.favoriteIdSet.set(set)
       }
     })
+  }
+
+  clearFilters(): void {
+    this.store.updateFilter({ query: '', page: 1, type: undefined, legendary: null, speedMin: null, speedMax: null })
+    this.store.load()
+  }
+
+  navigateToPokemon(): void {
+    this.router.navigate(['/pokemon'])
   }
 }

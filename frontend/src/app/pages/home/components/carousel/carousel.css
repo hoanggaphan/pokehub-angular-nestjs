@@ -46,6 +46,18 @@
   z-index: 2;
 }
 
+/* Skeletons */
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.45) 50%, rgba(255,255,255,0) 100%); animation: shimmer 1.3s infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.carousel-skeleton { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.skel-slide { background: #e5e7eb; }
+
+/* Empty state */
+.carousel-empty { display: grid; place-items: center; text-align: center; padding: 24px; border-radius: 12px; background: #ffffff; border: 1px solid #e5e7eb; }
+.carousel-empty .empty-illustration { width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: #f1f5f9; margin-bottom: 8px; font-size: 26px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
 /* Tweak Owl nav buttons for better aesthetics */
 :host ::ng-deep .owl-carousel .owl-nav {
   position: absolute;

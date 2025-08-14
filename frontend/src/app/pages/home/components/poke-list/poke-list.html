@@ -1,14 +1,39 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-    @for (p of store.sortedPokemon(); track p.id) {
-    <app-pokemon-card [pokemon]="p" [favorite]="favoriteIdSet().has(p.id)"
-        (toggleFavorite)="handleToggleFavorite($event)" (view)="openDetail($event)"></app-pokemon-card>
-    }
-    @empty {
-    <div class="col-span-full text-center py-8">Loading Pokémon...</div>
-    }
-</div>
+@if (store.isLoading()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        @for (s of skeletonItems; track s) {
+            <div class="card-skeleton">
+                <div class="skel-thumb shimmer"></div>
+                <div class="skel-title shimmer"></div>
+                <div class="skel-badges">
+                    <span class="skel-badge shimmer"></span>
+                    <span class="skel-badge shimmer"></span>
+                </div>
+                <div class="skel-actions">
+                    <span class="skel-btn shimmer"></span>
+                    <span class="skel-btn shimmer"></span>
+                </div>
+            </div>
+        }
+    </div>
+} @else if (store.sortedPokemon().length === 0) {
+    <div class="empty-state">
+        <div class="empty-illustration">🎣</div>
+        <h3>Ready for a Pokémon adventure?</h3>
+        <p>Start your journey by exploring the Pokémon world and importing your favorite creatures!</p>
+        <div class="empty-actions">
+            <button class="btn-primary" (click)="navigateToPokemon()">Start Adventure</button>
+        </div>
+    </div>
+} @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        @for (p of store.sortedPokemon(); track p.id) {
+            <app-pokemon-card [pokemon]="p" [favorite]="favoriteIdSet().has(p.id)"
+                (toggleFavorite)="handleToggleFavorite($event)" (view)="openDetail($event)"></app-pokemon-card>
+        }
+    </div>
+}
 
 @if (selectedPokemon()) {
-<app-pokemon-detail-modal [pokemon]="selectedPokemon()!" [favorite]="favoriteIdSet().has(selectedPokemon()!.id)"
-    (toggleFavorite)="handleToggleFavorite($event)" (closed)="closeDetail()" />
+    <app-pokemon-detail-modal [pokemon]="selectedPokemon()!" [favorite]="favoriteIdSet().has(selectedPokemon()!.id)"
+        (toggleFavorite)="handleToggleFavorite($event)" (closed)="closeDetail()" />
 }
