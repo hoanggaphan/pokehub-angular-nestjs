@@ -1,0 +1,43 @@
+    <div class="modal-backdrop" (click)="onClose()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" type="button" (click)="onClose()">×</button>
+    <div class="modal-body">
+      <div class="image-col">
+        <img [src]="pokemon.image" [alt]="pokemon.name" />
+      </div>
+      <div class="info-col">
+        <h2>#{{ pokemon.id }} · {{ pokemon.name }}</h2>
+        <div class="types">
+          <span class="chip">{{ pokemon.type1 }}</span>
+          @if (pokemon.type2) { <span class="chip">{{ pokemon.type2 }}</span> }
+        </div>
+        <div class="meta">
+          <div><strong>Generation:</strong> {{ pokemon.generation }}</div>
+          <div><strong>Legendary:</strong> {{ pokemon.legendary ? 'Yes' : 'No' }}</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Total</span><b>{{ pokemon.total }}</b></div>
+          <div class="stat"><span>HP</span><b>{{ pokemon.hp }}</b></div>
+          <div class="stat"><span>Attack</span><b>{{ pokemon.attack }}</b></div>
+          <div class="stat"><span>Defense</span><b>{{ pokemon.defense }}</b></div>
+          <div class="stat"><span>Sp. Atk</span><b>{{ pokemon.spAttack }}</b></div>
+          <div class="stat"><span>Sp. Def</span><b>{{ pokemon.spDefense }}</b></div>
+          <div class="stat"><span>Speed</span><b>{{ pokemon.speed }}</b></div>
+        </div>
+        <div class="modal-actions">
+          @if (pokemon.ytbUrl) {
+            <a class="btn btn-trailer" [href]="pokemon.ytbUrl" target="_blank" rel="noopener noreferrer" aria-label="Watch trailer on YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 8l6 4-6 4V8z"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" fill-opacity=".2"></path></svg>
+              Watch trailer
+            </a>
+          }
+          <button class="btn btn-outline" type="button" (click)="onClose()" aria-label="Close dialog">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

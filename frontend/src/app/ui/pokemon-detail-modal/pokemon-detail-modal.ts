@@ -2,19 +2,19 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Pokemon } from '../../models/Pokemon';
 
 @Component({
-  selector: 'app-pokemon-card',
+  selector: 'app-pokemon-detail-modal',
   standalone: true,
   imports: [],
-  templateUrl: './pokemon-card.html',
-  styleUrls: ['./pokemon-card.css'],
+  templateUrl: './pokemon-detail-modal.html',
+  styleUrls: ['./pokemon-detail-modal.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PokemonCard {
+export class PokemonDetailModal {
   @Input({ required: true }) pokemon!: Pokemon
-  @Output() view = new EventEmitter<Pokemon>()
+  @Output() closed = new EventEmitter<void>()
 
-  onViewDetail() {
-    this.view.emit(this.pokemon)
+  onClose() {
+    this.closed.emit()
   }
 }
 

@@ -1,0 +1,25 @@
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal { background: #fff; border-radius: 12px; width: min(900px, 92vw); max-height: 90vh; overflow: auto; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.modal-close { position: absolute; top: 8px; right: 12px; font-size: 22px; background: transparent; border: none; cursor: pointer; line-height: 1; }
+.modal-body { display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px; padding: 20px; }
+.image-col { display: flex; align-items: center; justify-content: center; }
+.image-col img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; }
+.info-col h2 { margin: 0 0 8px; font-size: 20px; }
+.types { display: flex; gap: 8px; margin-bottom: 10px; }
+.chip { background: #f1f5f9; border-radius: 999px; padding: 4px 10px; font-size: 12px; }
+.meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 8px 0 12px; font-size: 14px; color: #374151; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.stat { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 8px; text-align: center; }
+.stat span { display: block; font-size: 11px; color: #6b7280; }
+.stat b { font-size: 16px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 14px; align-items: center; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, color .2s ease; }
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 18px; height: 18px; }
+.btn-trailer { color: #fff; background: linear-gradient(135deg, #E91E63, #F44336); box-shadow: 0 8px 18px rgba(244, 67, 54, 0.35); }
+.btn-trailer:hover { filter: brightness(1.06); }
+.btn-outline { color: #374151; background: #fff; border-color: #e5e7eb; }
+.btn-outline:hover { background: #f9fafb; }
+@media (max-width: 640px) { .modal-body { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .modal-body { grid-template-columns: 1fr; } }
+

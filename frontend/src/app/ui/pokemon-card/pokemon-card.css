@@ -1,0 +1,10 @@
+.card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; border-top: 1px solid #e5e7eb; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, color .2s ease; }
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 16px; height: 16px; }
+.btn-watch { color: #fff; background: linear-gradient(135deg, #E91E63, #F44336); box-shadow: 0 6px 14px rgba(244, 67, 54, 0.35); }
+.btn-watch:hover { filter: brightness(1.06); }
+.btn-view { color: #1f2937; background: #ffffff; border-color: #e5e7eb; }
+.btn-view:hover { background: #f9fafb; }
+.btn:focus { outline: none; box-shadow: 0 0 0 3px rgba(233,30,99,.25); }
+
