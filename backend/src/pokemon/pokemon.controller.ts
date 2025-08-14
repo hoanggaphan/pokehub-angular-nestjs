@@ -34,6 +34,8 @@ export class PokemonController {
     @Query('type') type?: string,
     @Query('generation') generation?: string,
     @Query('legendary') legendary?: string,
+    @Query('speedMin') speedMin?: string,
+    @Query('speedMax') speedMax?: string,
   ) {
     return this.pokemonService.findAllPaginated({
       page: page ? Number(page) : 1,
@@ -45,6 +47,8 @@ export class PokemonController {
         typeof legendary === 'string'
           ? legendary.toLowerCase() === 'true'
           : undefined,
+      speedMin: speedMin ? Number(speedMin) : undefined,
+      speedMax: speedMax ? Number(speedMax) : undefined,
     });
   }
 

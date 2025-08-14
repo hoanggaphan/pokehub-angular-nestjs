@@ -44,8 +44,19 @@ export class PokemonService {
     type?: string;
     generation?: number;
     legendary?: boolean;
+    speedMin?: number;
+    speedMax?: number;
   }) {
-    const { page, limit, name, type, generation, legendary } = params;
+    const {
+      page,
+      limit,
+      name,
+      type,
+      generation,
+      legendary,
+      speedMin,
+      speedMax,
+    } = params;
 
     if (page < 1 || limit < 1) {
       throw new BadRequestException('page and limit must be positive integers');
@@ -73,12 +84,74 @@ export class PokemonService {
       whereClauses.forEach((w) => (w.legendary = legendary));
     }
 
-    const [items, total] = await this.pokemonRepository.findAndCount({
-      where: whereClauses,
-      take: limit,
-      skip: (page - 1) * limit,
-      order: { id: 'ASC' },
-    });
+    // Use QueryBuilder to support speed range condition across OR clauses
+    const qb = this.pokemonRepository.createQueryBuilder('pokemon');
+
+    // Convert OR whereClauses into QB conditions
+    if (whereClauses.length > 1) {
+      qb.where('1=0');
+      whereClauses.forEach((w, idx) => {
+        const conditions: string[] = [];
+        const paramsQB: Record<string, unknown> = {};
+        if (w.name) {
+          conditions.push('pokemon.name ILIKE :name' + idx);
+          paramsQB['name' + idx] = (w.name as any).value;
+        }
+        if ((w as any).type1) {
+          conditions.push('pokemon.type1 ILIKE :type1' + idx);
+          paramsQB['type1' + idx] = (w as any).type1.value;
+        }
+        if ((w as any).type2) {
+          conditions.push('pokemon.type2 ILIKE :type2' + idx);
+          paramsQB['type2' + idx] = (w as any).type2.value;
+        }
+        if (w.generation !== undefined) {
+          conditions.push('pokemon.generation = :generation' + idx);
+          paramsQB['generation' + idx] = w.generation;
+        }
+        if (w.legendary !== undefined) {
+          conditions.push('pokemon.legendary = :legendary' + idx);
+          paramsQB['legendary' + idx] = w.legendary;
+        }
+        const clause = conditions.length ? conditions.join(' AND ') : '1=1';
+        qb.orWhere('(' + clause + ')', paramsQB);
+      });
+    } else {
+      const w = whereClauses[0];
+      qb.where('1=1');
+      if (w.name)
+        qb.andWhere('pokemon.name ILIKE :name', {
+          name: (w.name as any).value,
+        });
+      if ((w as any).type1)
+        qb.andWhere('pokemon.type1 ILIKE :type1', {
+          type1: (w as any).type1.value,
+        });
+      if ((w as any).type2)
+        qb.andWhere('pokemon.type2 ILIKE :type2', {
+          type2: (w as any).type2.value,
+        });
+      if (w.generation !== undefined)
+        qb.andWhere('pokemon.generation = :generation', {
+          generation: w.generation,
+        });
+      if (w.legendary !== undefined)
+        qb.andWhere('pokemon.legendary = :legendary', {
+          legendary: w.legendary,
+        });
+    }
+
+    if (speedMin !== undefined)
+      qb.andWhere('pokemon.speed >= :speedMin', { speedMin });
+
+    if (speedMax !== undefined)
+      qb.andWhere('pokemon.speed <= :speedMax', { speedMax });
+
+    qb.orderBy('pokemon.id', 'ASC')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const [items, total] = await qb.getManyAndCount();
 
     return {
       data: items,
@@ -228,7 +301,6 @@ export class PokemonService {
               message: `Imported ${totalInserted} Pokémon successfully`,
             });
           } catch (err) {
-            console.error(`Final batch insert failed: ${err.message}`);
             reject(new BadRequestException((err as Error).message));
           }
         });

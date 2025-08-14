@@ -48,6 +48,8 @@ export default class PokemonService {
     type?: string;
     generation?: number;
     legendary?: boolean;
+    speedMin?: number;
+    speedMax?: number;
   }): Observable<PageResponse<Pokemon>> {
     const queryParams: Record<string, string> = {}
     if (params.page !== undefined) queryParams['page'] = String(params.page)
@@ -56,6 +58,8 @@ export default class PokemonService {
     if (params.type) queryParams['type'] = params.type
     if (params.generation !== undefined) queryParams['generation'] = String(params.generation)
     if (params.legendary !== undefined) queryParams['legendary'] = String(params.legendary)
+    if (params.speedMin !== undefined) queryParams['speedMin'] = String(params.speedMin)
+    if (params.speedMax !== undefined) queryParams['speedMax'] = String(params.speedMax)
 
     const httpParams = new HttpParams({ fromObject: queryParams })
     return this._http.get<PageResponse<Pokemon>>(this.apiUrl, { params: httpParams })
