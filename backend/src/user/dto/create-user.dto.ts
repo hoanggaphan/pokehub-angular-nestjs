@@ -15,4 +15,10 @@ export class CreateUserDto {
     message: 'Password must contains at least 1 number and uppercase letter',
   })
   password: string;
+
+  @Length(6, 32)
+  @Matches(passwordRegex, {
+    message: 'Password must contains at least 1 number and uppercase letter',
+  })
+  confirm_password: string;
 }

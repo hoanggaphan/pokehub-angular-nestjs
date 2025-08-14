@@ -13,26 +13,25 @@ interface RegisterReq {
     username: string;
     password: string;
     confirm_password: string;
-    role: string;
 }
 
 @Injectable({
     providedIn: 'root',
 })
 export default class AuthService {
-    private apiUrl = `${environment.apiUrl}/auth`
+    private apiUrl = environment.apiUrl;
     _httpClient = inject(HttpClient);
     _router = inject(Router);
 
     login(user: LoginReq) {
         return this._httpClient.post<User>(
-            `${this.apiUrl}/login`,
+            `${this.apiUrl}/auth/login`,
             user
         );
     }
 
     register(user: RegisterReq) {
-        return this._httpClient.post(`${this.apiUrl}/register`, user);
+        return this._httpClient.post(`${this.apiUrl}/user`, user);
     }
 
     logout() {
@@ -58,7 +57,7 @@ export default class AuthService {
     }
 
     refreshToken(refreshToken: string) {
-        return this._httpClient.post(`${this.apiUrl}/refresh-token`, {
+        return this._httpClient.post(`${this.apiUrl}/auth/refresh-token`, {
             refreshToken,
         });
     }

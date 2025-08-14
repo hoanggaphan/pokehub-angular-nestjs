@@ -64,7 +64,7 @@ export class Register {
 
     const { username, password, confirm_password } = this.form.getRawValue();
     this.auth
-      .register({ username, password, confirm_password, role: 'user' })
+      .register({ username, password, confirm_password })
       .subscribe({
         next: () => {
           this.router.navigateByUrl('/login');
