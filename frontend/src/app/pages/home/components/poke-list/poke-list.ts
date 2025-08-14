@@ -25,6 +25,8 @@ export class PokeList implements OnInit {
   skeletonItems = Array.from({ length: 10 })
 
   ngOnInit(): void {
+    // Set limit to 10 for home page
+    this.store.setLimit(10)
     this.store.load()
 
     if (this.authService.isLogged()) {
