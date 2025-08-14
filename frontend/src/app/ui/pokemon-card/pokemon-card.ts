@@ -6,7 +6,7 @@ import { Pokemon } from '../../models/Pokemon';
   standalone: true,
   imports: [],
   templateUrl: './pokemon-card.html',
-  styleUrls: ['./pokemon-card.css'],
+  styleUrl: './pokemon-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonCard {

@@ -84,7 +84,7 @@
   } @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for (p of store.sortedPokemon(); track p.id) {
-        <app-pokemon-card [pokemon]="p" (view)="openDetail($event)" />
+        <app-pokemon-card [pokemon]="p" [favorite]="favoriteIdSet().has(p.id)" (toggleFavorite)="handleToggleFavorite($event)" (view)="openDetail($event)" />
       }
     </div>
   }
@@ -95,7 +95,7 @@
   </div>
 
   @if (selectedPokemon()) {
-    <app-pokemon-detail-modal [pokemon]="selectedPokemon()!" (closed)="closeDetail()" />
+    <app-pokemon-detail-modal [pokemon]="selectedPokemon()!" [favorite]="favoriteIdSet().has(selectedPokemon()!.id)" (toggleFavorite)="handleToggleFavorite($event)" (closed)="closeDetail()" />
   }
 </div>
 

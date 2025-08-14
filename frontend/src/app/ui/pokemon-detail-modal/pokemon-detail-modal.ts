@@ -6,7 +6,7 @@ import { Pokemon } from '../../models/Pokemon';
   standalone: true,
   imports: [],
   templateUrl: './pokemon-detail-modal.html',
-  styleUrls: ['./pokemon-detail-modal.css'],
+  styleUrl: './pokemon-detail-modal.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonDetailModal {

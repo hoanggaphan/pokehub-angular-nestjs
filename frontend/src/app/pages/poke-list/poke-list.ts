@@ -8,6 +8,8 @@ import { PokemonCard } from '../../ui/pokemon-card/pokemon-card';
 import { Import } from './import/import';
 import { ImportYourWorld } from './import-your-world/import-your-world';
 import { PokemonDetailModal } from '../../ui/pokemon-detail-modal/pokemon-detail-modal';
+import AuthService from '../../services/auth.service';
+import FavoritesService from '../../services/favorites.service';
 
 @Component({
   selector: 'app-poke-list',
@@ -19,6 +21,8 @@ import { PokemonDetailModal } from '../../ui/pokemon-detail-modal/pokemon-detail
 })
 export class PokeList implements OnInit {
   store = inject(PokemonStore)
+  private authService = inject(AuthService)
+  private favoritesService = inject(FavoritesService)
   router = inject(Router)
 
   // Local UI state
@@ -30,13 +34,19 @@ export class PokeList implements OnInit {
 
   limits = [10, 20, 50, 100]
   skeletonItems = Array.from({ length: 8 })
+  selectedPokemon = signal<Pokemon | null>(null)
+  favoriteIdSet = signal<Set<number>>(new Set())
 
   ngOnInit(): void {
     // load initial
     this.store.load()
-  }
 
-  selectedPokemon = signal<Pokemon | null>(null)
+    if (this.authService.isLogged()) {
+      this.favoritesService.getMyFavorites().subscribe({
+        next: (list) => this.favoriteIdSet.set(new Set(list.map(p => p.id)))
+      })
+    }
+  }
 
   openDetail(pokemon: Pokemon) {
     this.selectedPokemon.set(pokemon)
@@ -44,6 +54,20 @@ export class PokeList implements OnInit {
 
   closeDetail() {
     this.selectedPokemon.set(null)
+  }
+
+  handleToggleFavorite = (pokemon: Pokemon) => {
+    if (!this.authService.isLogged()) {
+      alert('Please login to favorite Pokémon.')
+      return
+    }
+    this.favoritesService.toggle(pokemon.id).subscribe({
+      next: () => {
+        const set = new Set(this.favoriteIdSet())
+        if (set.has(pokemon.id)) set.delete(pokemon.id); else set.add(pokemon.id)
+        this.favoriteIdSet.set(set)
+      }
+    })
   }
 
   navigateToCatch() {
