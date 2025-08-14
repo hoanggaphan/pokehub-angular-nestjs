@@ -3,7 +3,7 @@ import { Home } from './pages/home/home';
 import AuthGuard from './guards/auth.guard';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
-import { PrimaryLayout } from './layout/primary-layout/primary-layout';
+import { PrimaryLayout } from './ui/primary-layout/primary-layout';
 
 export const routes: Routes = [
     {
