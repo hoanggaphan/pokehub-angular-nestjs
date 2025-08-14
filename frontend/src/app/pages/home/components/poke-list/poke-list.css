@@ -16,7 +16,7 @@
 .empty-state h3 { margin: 6px 0; font-size: 18px; }
 .empty-state p { margin: 0 0 14px; color: #6b7280; }
 .empty-actions { display: flex; justify-content: center; }
-.btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: 10px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #e11d48, #be123c); border: none; cursor: pointer; box-shadow: 0 10px 18px rgba(225,29,72,.25); transition: all 0.2s ease; }
-.btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(225,29,72,.35); }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: 10px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #ec4899, #db2777); border: none; cursor: pointer; box-shadow: 0 10px 18px rgba(236,72,153,.25); transition: all 0.2s ease; }
+.btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(236,72,153,.35); }
 
 
