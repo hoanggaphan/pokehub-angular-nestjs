@@ -100,6 +100,18 @@ export class PokemonService {
     return exist;
   }
 
+  async findRandomWithTrailers(limit = 4) {
+    const items = await this.pokemonRepository
+      .createQueryBuilder('pokemon')
+      .where('pokemon.ytbUrl IS NOT NULL')
+      .andWhere("pokemon.ytbUrl <> ''")
+      .orderBy('RANDOM()')
+      .limit(limit)
+      .getMany();
+
+    return items;
+  }
+
   async update(id: number, updatePokemonDto: UpdatePokemonDto) {
     const exist = await this.pokemonRepository.findOneBy({ id });
     if (!exist) {

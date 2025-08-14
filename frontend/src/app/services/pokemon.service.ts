@@ -24,4 +24,8 @@ export default class PokemonService {
     form.append('file', file);
     return this._http.post(`${this.apiUrl}/import-csv`, form);
   }
+
+  getRandomTrailers(): Observable<Pokemon[]> {
+    return this._http.get<Pokemon[]>(`${this.apiUrl}/trailers/random`);
+  }
 }

@@ -53,6 +53,11 @@ export class PokemonController {
     return this.pokemonService.findOne(+id);
   }
 
+  @Get('trailers/random')
+  findRandomTrailers() {
+    return this.pokemonService.findRandomWithTrailers(4);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePokemonDto: UpdatePokemonDto) {
     return this.pokemonService.update(+id, updatePokemonDto);
