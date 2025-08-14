@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PokemonModule } from './pokemon/pokemon.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PokemonModule } from './pokemon/pokemon.module';
     AuthModule,
     UserModule,
     PokemonModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
