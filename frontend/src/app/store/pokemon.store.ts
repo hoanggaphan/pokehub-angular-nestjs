@@ -83,7 +83,14 @@ export const PokemonStore = signalStore(
                         speedMax: f.speedMax == null ? undefined : f.speedMax,
                     }).pipe(
                         tapResponse({
-                            next: (res: PageResponse<Pokemon>) => patchState(store, { pokemon: res.data, meta: res.meta }),
+                            next: (res: PageResponse<Pokemon>) => {
+                                const hasData = res.data.length > 0;
+                                patchState(store, { 
+                                    pokemon: res.data, 
+                                    meta: res.meta, 
+                                    hasInitialData: store.hasInitialData() || hasData 
+                                });
+                            },
                             error: console.error,
                             finalize: () => patchState(store, { isLoading: false }),
                         })
@@ -107,7 +114,14 @@ export const PokemonStore = signalStore(
                         speedMax: f.speedMax == null ? undefined : f.speedMax,
                     }).pipe(
                         tapResponse({
-                            next: (res: PageResponse<Pokemon>) => patchState(store, { pokemon: res.data, meta: res.meta, hasInitialData: true }),
+                            next: (res: PageResponse<Pokemon>) => {
+                                const hasData = res.data.length > 0;
+                                patchState(store, { 
+                                    pokemon: res.data, 
+                                    meta: res.meta, 
+                                    hasInitialData: store.hasInitialData() || hasData 
+                                });
+                            },
                             error: console.error,
                             finalize: () => patchState(store, { isLoading: false }),
                         })
