@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AccessTokenGuard } from 'src/auth/access-token.guard';
+import { AccessTokenGuard } from '../auth/access-token.guard';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { PokemonService } from './pokemon.service';

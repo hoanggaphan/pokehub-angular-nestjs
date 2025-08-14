@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Length, Matches } from 'class-validator';
-import { passwordRegex, usernameRegex } from 'src/utils/regex';
+import { passwordRegex, usernameRegex } from '../../utils/regex';
 
 export class CreateUserDto {
   @Length(6, 32)

@@ -7,8 +7,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
-import { AuthenticatedUser } from 'src/auth/types';
-import { AccessTokenGuard } from 'src/auth/access-token.guard';
+import { AuthenticatedUser } from '../auth/types';
+import { AccessTokenGuard } from '../auth/access-token.guard';
 
 @Controller('favorite')
 export class FavoriteController {

@@ -1,5 +1,5 @@
-import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Pokemon } from '../../pokemon/entities/pokemon.entity';
+import { User } from '../../user/entities/user.entity';
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

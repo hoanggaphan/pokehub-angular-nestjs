@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { Role } from 'src/enums/role.enum';
+import { Role } from '../../enums/role.enum';
 import {
   Column,
   CreateDateColumn,
@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Favorite } from '../../favorite/entities/favorite.entity';
 
 @Entity()
 export class User {
