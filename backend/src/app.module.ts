@@ -19,7 +19,7 @@ import { FavoriteModule } from './favorite/favorite.module';
       password: process.env.DB_PASS?.toString(),
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: process.env.NODE_ENV === 'development',
     }),
     AuthModule,
     UserModule,
